@@ -3,10 +3,20 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { createStore } from 'redux';
+
+const initialState = {
+  player1: 0,
+  player2: 0,
+};
+
+create
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <App 
+       
+    />
   </React.StrictMode>,
   document.getElementById('root')
 );
