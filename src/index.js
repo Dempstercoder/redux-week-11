@@ -10,6 +10,7 @@ const initialState = {
   player1: 0,
   player2: 0,
   serving: 1,
+  winner: 0, // initially there is no winner so we set it to 0.
 };
 
 const server = (state) => { //state is an object 
@@ -39,10 +40,34 @@ const incrementPlayer2 = (state) => { // accepts state object
   }
 }
 
+const isThereAWinner = (state) => {
+  return state.player1 >= 21 || state.player2 >= 21 // returns true or false
+}
+
+const whoWins = (state) => {
+  return {
+    ...state,
+    winner: isThereAWinner(state) ? (state.player1 > state.player2 ? 1 : 2) : 0 // ternary inside a ternary. If there is a winner, then compare scores (if player1s score is bigger than 2) then there is a winner. If its false then goes straight to 0, no winner. Sets winner property to 0.
+  }
+}
+
+// const winner = (state) => {
+//   state.player1 >=  21 ? 1 : 2
+// }
+
+// const winner = (state) => {
+//     state.player1 >=  21  || state.player2 >= 21
+//   }   
+
+// const getwinner = (state) => {
+//   state.player1 > state.player2 ? 1 : 2
+// }
+
+
 const reducer = (state, action) => {
   switch (action.type){
-    case "INCREMENTPLAYER1" : return server(incrementPlayer1(state)); // the function incrementPlayer1 grabs the state and then 
-    case "INCREMENTPLAYER2" : return server(incrementPlayer2(state));
+    case "INCREMENTPLAYER1" : return whoWins(server(incrementPlayer1(state))); // the function incrementPlayer1 grabs the state and then 
+    case "INCREMENTPLAYER2" : return whoWins(server(incrementPlayer2(state)));
     case "RESET" : return initialState; // had { initialState } before,
     //did not reset, showed NaN for text on browser. This does not need to be in Js land as it is just using the variable from above to return the state.
     default: return state;
@@ -69,6 +94,7 @@ ReactDOM.render(
         handleIncrementPlayer2={ () => store.dispatch({ type: "INCREMENTPLAYER2" })}
         handleReset={ () => store.dispatch({ type: "RESET" })}
         serving = { state.serving }
+        winner = { state.winner }
         />
   </React.StrictMode>,
   document.getElementById('root')
