@@ -9,16 +9,40 @@ import { createStore } from 'redux';
 const initialState = {
   player1: 0,
   player2: 0,
+  serving: 1,
 };
+
+const server = (state) => { //state is an object 
+  let total = state.player1 + state.player2
+    return {
+      ...state, 
+      serving: Math.floor(total / 5) % 2 === 0 ? 1 : 2 // math.floor rounds a number down. If the total is divided by 5 and 2 left over which equals to 0, then player1 serves, if not then player2 serves.
+    }
+}
 
 // const changeReducer = (currentState, action) => {
 //   return 
 // }
 
+
+const incrementPlayer1 = (state) => { // accepts state object
+  return {  
+    ...state, // copying the state object (...state), then accessing the property within (player1) and then changing the state by using state.player1 and adding 1.
+    player1: state.player1 + 1 
+  }
+}
+
+const incrementPlayer2 = (state) => { // accepts state object
+  return { 
+    ...state, 
+    player2: state.player2 + 1 
+  }
+}
+
 const reducer = (state, action) => {
   switch (action.type){
-    case "INCREMENTPLAYER1" : return { ...state, player1: state.player1 + 1 };
-    case "INCREMENTPLAYER2" : return { ...state, player2: state.player2 + 1 };
+    case "INCREMENTPLAYER1" : return server(incrementPlayer1(state)); // the function incrementPlayer1 grabs the state and then 
+    case "INCREMENTPLAYER2" : return server(incrementPlayer2(state));
     case "RESET" : return initialState; // had { initialState } before,
     //did not reset, showed NaN for text on browser. This does not need to be in Js land as it is just using the variable from above to return the state.
     default: return state;
@@ -44,6 +68,7 @@ ReactDOM.render(
         player2 = {state.player2} 
         handleIncrementPlayer2={ () => store.dispatch({ type: "INCREMENTPLAYER2" })}
         handleReset={ () => store.dispatch({ type: "RESET" })}
+        serving = { state.serving }
         />
   </React.StrictMode>,
   document.getElementById('root')
