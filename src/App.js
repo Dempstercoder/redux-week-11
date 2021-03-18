@@ -1,9 +1,12 @@
 import './App.css';
 import Button from './components/Button';
 import Winner from './components/Winner';
-import ScoreCard from './components/ScoreCard';
+import Player1 from "./components/Player/Player1";
+import Player2 from "./components/Player/Player2";
+// import { connect } from "react-redux";
 
-const App = ({player1, player2, handleIncrementPlayer1, handleIncrementPlayer2, handleReset, serving, winner}) => (
+
+const App = ({handleIncrementPlayer1, handleIncrementPlayer2, handleReset, serving, winner}) => (
   <>
       {/* header */}
       <header className="jumbotron mt-4 mb-0">
@@ -12,18 +15,14 @@ const App = ({player1, player2, handleIncrementPlayer1, handleIncrementPlayer2, 
 
       {/* scores */}
       <div className="row mb-4">
-      <ScoreCard 
-        serving={ serving === 1 }
+      <Player1 
         handleIncrement={ handleIncrementPlayer1 }
-        score = { player1 }
-        playerTitle = "Player 1"
+        player = { 1 }
         />
         
-      <ScoreCard 
-        serving={ serving === 2 }
+      <Player2
         handleIncrement={ handleIncrementPlayer2 }
-        score = { player2 }
-        playerTitle = "Player 2"
+        player = { 2 }
         />
         </div>
           
